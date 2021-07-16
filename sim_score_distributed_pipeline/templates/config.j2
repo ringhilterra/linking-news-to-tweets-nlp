@@ -1,0 +1,13 @@
+{
+  "schedule": "R1//PT5S",
+  "name": "{{ job_id }}",
+  "container": {
+    "type": "DOCKER",
+    "image": "{{ docker_image }}",
+    "forcePullImage": "{{ force_pull }}"
+  },
+  "cpus": "{{ ncpu }}",
+  "mem": "{{ memory }}",
+  "uris": [],
+  "command": "{% block command %}{{command}}{% endblock %}"
+}

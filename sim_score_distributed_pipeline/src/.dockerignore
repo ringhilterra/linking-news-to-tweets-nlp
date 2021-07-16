@@ -1,0 +1,4 @@
+# Files to ignore when building container
+Dockerfile
+Makefile
+.git/
