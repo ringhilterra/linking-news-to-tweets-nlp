@@ -1,0 +1,73 @@
+<html>
+
+<head>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='bootstrap.min.css') }}">
+
+</head>
+
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>News Article Search</h1>
+        </div>
+
+        <div class="col-md-12">
+            <form id="keywords">
+                <div class="form-group">
+                    <label for="keyword_text">Enter Keywords</label>
+                    <textarea class="form-control" id="keyword_text" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+        <div class="col-md-12">
+            <div id="results"></div>
+        </div>
+    </div>
+</div>
+<script type=text/javascript src="{{url_for('static', filename='jquery-3.3.1.min.js') }}"></script>
+<script type=text/javascript src="{{url_for('static', filename='bootstrap.min.js') }}"></script>
+<script>
+        $(function() {
+            console.log('Rolling');
+            $('#keywords').submit(function(event) {
+                // Stop the browser from submitting the form.
+                event.preventDefault();
+
+                var formData = $('#keyword_text').val();
+                console.log(formData);
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/lookup',
+                    data: {'keywords': formData},
+                    success: display_results
+                });
+
+            });
+        });
+
+        function display_results(results) {
+            console.log(results);
+            var result_string = "";
+            $('#results').html(result_string);
+
+            if (results.length === 0) {
+                result_string += "<p>No Matching News Articles</p>"
+            }
+
+            else {
+                for (var i in results) {
+                    result_string += "<p>News ID: " + results[i]['news_index'] + "</p>";
+                    result_string += "<p>Headline: " + results[i]['headline'] + "</p>";
+                    result_string += "<p>Score: " + results[i]['score'] + "</p>";
+                    result_string += "<br />";
+                }
+            }
+
+            $('#results').html(result_string)
+        }
+</script>
+</body>
+</html>
